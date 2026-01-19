@@ -750,14 +750,53 @@ def _process_file_for_extraction(
     # Language-to-extractor mapping for CFG/DFG analysis
     def _get_extractors(language: str):
         """Return (cfg_extractor, dfg_extractor) for the given language."""
-        if language == "python":
-            from tldr.cfg_extractor import extract_python_cfg
-            from tldr.dfg_extractor import extract_python_dfg
-            return extract_python_cfg, extract_python_dfg
-        elif language in ("typescript", "javascript"):
-            from tldr.cfg_extractor import extract_typescript_cfg
-            from tldr.dfg_extractor import extract_typescript_dfg
-            return extract_typescript_cfg, extract_typescript_dfg
+        from tldr import cfg_extractor, dfg_extractor
+
+        cfg_map = {
+            "python": cfg_extractor.extract_python_cfg,
+            "typescript": cfg_extractor.extract_typescript_cfg,
+            "javascript": cfg_extractor.extract_typescript_cfg,
+            "go": cfg_extractor.extract_go_cfg,
+            "rust": cfg_extractor.extract_rust_cfg,
+            "java": cfg_extractor.extract_java_cfg,
+            "c": cfg_extractor.extract_c_cfg,
+            "cpp": cfg_extractor.extract_cpp_cfg,
+            "php": cfg_extractor.extract_php_cfg,
+            "ruby": cfg_extractor.extract_ruby_cfg,
+            "swift": cfg_extractor.extract_swift_cfg,
+            "csharp": cfg_extractor.extract_csharp_cfg,
+            "kotlin": cfg_extractor.extract_kotlin_cfg,
+            "scala": cfg_extractor.extract_scala_cfg,
+            "lua": cfg_extractor.extract_lua_cfg,
+            "luau": cfg_extractor.extract_luau_cfg,
+            "elixir": cfg_extractor.extract_elixir_cfg,
+        }
+
+        dfg_map = {
+            "python": dfg_extractor.extract_python_dfg,
+            "typescript": dfg_extractor.extract_typescript_dfg,
+            "javascript": dfg_extractor.extract_typescript_dfg,
+            "go": dfg_extractor.extract_go_dfg,
+            "rust": dfg_extractor.extract_rust_dfg,
+            "java": dfg_extractor.extract_java_dfg,
+            "c": dfg_extractor.extract_c_dfg,
+            "cpp": dfg_extractor.extract_cpp_dfg,
+            "php": dfg_extractor.extract_php_dfg,
+            "ruby": dfg_extractor.extract_ruby_dfg,
+            "swift": dfg_extractor.extract_swift_dfg,
+            "csharp": dfg_extractor.extract_csharp_dfg,
+            "kotlin": dfg_extractor.extract_kotlin_dfg,
+            "scala": dfg_extractor.extract_scala_dfg,
+            "lua": dfg_extractor.extract_lua_dfg,
+            "luau": dfg_extractor.extract_luau_dfg,
+            "elixir": dfg_extractor.extract_elixir_dfg,
+        }
+
+        cfg_func = cfg_map.get(language)
+        dfg_func = dfg_map.get(language)
+
+        if cfg_func and dfg_func:
+            return cfg_func, dfg_func
         return None, None
 
     cfg_extractor, dfg_extractor = _get_extractors(lang)
